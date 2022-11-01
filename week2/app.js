@@ -1,30 +1,10 @@
 'use strict';
 const express = require('express');
 const app = express();
+const catRouter = require('./routes/catRoute');
 const port = 3000;
 
-app.get('/cat', (req, res) => {
-  //console.log(req)
-  res.send('From this endpoint you can get cats.')
-});
-
-app.get('/cat/:catId', (req, res) => {
-  // console.log(req.params)
-  res.send('From this endpoint you can get cat with id ' + req.params.catId)
-});
-
-app.post('/cat', (req, res)=> {
-  res.send('From this endpoint or location you can add more cats.')
-});
-
-app.put('/cat', (req, res)=> {
-  console.log(req)
-  res.send('From this endpoint or location you can edit more cats.')
-});
-app.delete('/cat', (req, res)=> {
-  console.log(req)
-  res.send('From this endpoint or location you can delete more cats.')
-});
+app.use('/cat', catRouter);
 
 app.get('/user', (req, res) => {
   res.send('From this endpoint you can get users.')
