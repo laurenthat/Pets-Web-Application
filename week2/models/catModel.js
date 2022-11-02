@@ -1,23 +1,58 @@
-'use strict';
-const cats = [
-  {
-    id: '1',
-    name: 'Frank',
-    birthdate: '2010-10-30',
-    weight: '5',
-    owner: '1',
-    filename: 'http://placekitten.com/400/300',
-  },
-  {
-    id: '2',
-    name: 'James',
-    birthdate: '2015-12-25',
-    weight: '11',
-    owner: '2',
-    filename: 'http://placekitten.com/400/302',
-  },
-];
+"use strict";
+// const cats = [
+//   {
+//     id: '1',
+//     name: 'Frank',
+//     birthdate: '2010-10-30',
+//     weight: '5',
+//     owner: '1',
+//     filename: 'http://placekitten.com/400/300',
+//   },
+//   {
+//     id: '2',
+//     name: 'James',
+//     birthdate: '2015-12-25',
+//     weight: '11',
+//     owner: '2',
+//     filename: 'http://placekitten.com/400/302',
+//   },
+// ];
+
+const pool = require("../database/db");
+const promisePool = pool.promise();
+
+const getAllCats = async (res) => {
+  try {
+    // TODO: do the LEFT (or INNER) JOIN to get owner's name as ownername (from wop_user table).
+    // WHERE wop_cat.owner = wop_user.user_id
+    const [rows] = await promisePool.query(
+      "SELECT wop_cat.cat_id, wop_cat.name, wop_cat.weight, wop_user.name as owner_name, wop_cat.filename, wop_cat.birthdate FROM wop_cat INNER JOIN wop_user ON wop_cat.owner = wop_user.user_id;"
+    );
+    return rows;
+  } catch (e) {
+    res.status(500).send(e.message);
+    console.error("error", e.message);
+  }
+};
+
+const getCatById = async (res, catId) => {
+  try {
+    const [rows] = await promisePool.query(
+      "SELECT * FROM wop_cat WHERE cat_id = ?",
+      [catId]
+    );
+    return rows[0];
+  } catch (e) {
+    res.status(500).send(e.message);
+    console.error("error", e.message);
+  }
+};
 
 module.exports = {
-  cats,
+  getAllCats,
+  getCatById,
 };
+
+// module.exports = {
+//   cats,
+// };
