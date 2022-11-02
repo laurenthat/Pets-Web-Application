@@ -1,16 +1,14 @@
 'use strict';
 // catRoutes
 const express = require('express');
-const router = express.Router()
+const router = express.Router();
+const userController = require('../controllers/userController');
 
-router.get('/', (req, res) => {
-    //console.log(req)
-    res.send('From this endpoint you can get users.')
-});
-router.get('/:userId', (req, res) => {
-    // console.log(req.params)
-    res.send('From this endpoint you can get user with id ' + req.params.catId)
-});
+
+router.get('/', userController.getUsers);
+
+router.get('/:userId', userController.getUser);
+
 router.post('/', (req, res)=> {
     res.send('From this endpoint or location you can add more users.')
 });
