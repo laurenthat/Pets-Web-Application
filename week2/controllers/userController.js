@@ -27,8 +27,15 @@ const getUser = (req, res) => {
     // res.json(catModel.cats[req.params.catId-1]);
 };
 
+const createUser = (req, res)=> {
+    // console.log(req.body);
+    const userInfo = `username: ${req.body.name}, email: ${req.body.email}`;
+    res.send('Adding new user' + userInfo);
+};
+
+
+
 const modifyUser = (req, res) => {};
-const createUser = (req, res) => {};
 const deleteUser = (req, res) => {};
 module.exports = {
     getUser,

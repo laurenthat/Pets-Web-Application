@@ -20,9 +20,14 @@ const getCat = (req, res) => {
     // res.json(catModel.cats[req.params.catId-1]);
 };
 
+const createCat = (req, res) => {
+    console.log(req.body);
+    res.send('Adding a cat')
+};
+
 const modifyCat = (req, res) => {};
-const createCat = (req, res) => {};
 const deleteCat = (req, res) => {};
+
 module.exports = {
     getCat,
     getCats,
