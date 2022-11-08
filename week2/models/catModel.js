@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 // const cats = [
 //   {
 //     id: '1',
@@ -25,9 +25,7 @@ const getAllCats = async (res) => {
   try {
     // TODO: do the LEFT (or INNER) JOIN to get owner's name as ownername (from wop_user table).
     // WHERE wop_cat.owner = wop_user.user_id
-    const [rows] = await promisePool.query(
-      "SELECT wop_cat.cat_id, wop_cat.name, wop_cat.weight, wop_user.name as owner_name, wop_cat.filename, wop_cat.birthdate FROM wop_cat INNER JOIN wop_user ON wop_cat.owner = wop_user.user_id;"
-    );
+    const [rows] = await promisePool.query("SELECT wop_cat.cat_id, wop_cat.name, wop_cat.weight, wop_user.name as owner_name, wop_cat.filename, wop_cat.birthdate FROM wop_cat INNER JOIN wop_user ON wop_cat.owner = wop_user.user_id;");
     return rows;
   } catch (e) {
     res.status(500).send(e.message);
@@ -37,10 +35,7 @@ const getAllCats = async (res) => {
 
 const getCatById = async (res, catId) => {
   try {
-    const [rows] = await promisePool.query(
-      "SELECT * FROM wop_cat WHERE cat_id = ?",
-      [catId]
-    );
+    const [rows] = await promisePool.query("SELECT * FROM wop_cat WHERE cat_id = ?", [catId]);
     return rows[0];
   } catch (e) {
     res.status(500).send(e.message);
@@ -48,11 +43,31 @@ const getCatById = async (res, catId) => {
   }
 };
 
+const addCat = async (cat, res) => {
+  try {
+    const sql = "INSERT INTO wop_cat VALUES (null, ?, ?, ?, ?, ?)";
+    const values =[cat.name, cat.weight, cat.owner, cat.filename, cat.birthdate];
+    const [result] = await promisePool.query(sql, values);
+    return result.insertId;
+  } catch (e) {
+    console.error("error", e.message);
+    res.status(500).send(e.message);
+  }
+};
+
+const deleteCatById = async (catId, res) => {
+  try {
+    const [rows] = await promisePool.query("DELETE FROM wop_cat WHERE cat_id = ?", [catId]);
+    return rows;
+  } catch (e) {
+    console.error("error", e.message);
+    res.status(500).send(e.message);
+  }
+}
+
 module.exports = {
   getAllCats,
   getCatById,
+  addCat,
+  deleteCatById
 };
-
-// module.exports = {
-//   cats,
-// };

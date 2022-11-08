@@ -16,8 +16,6 @@ router.post('/', upload.single('cat'), catController.createCat);
 router.put('/', (req, res)=> {
     res.send('From this endpoint or location you can edit more cats.')
 });
-router.delete('/', (req, res)=> {
-    res.send('From this endpoint or location you can delete more cats.')
-});
+router.delete('/:catId', catController.deleteCat);
 
 module.exports = router;

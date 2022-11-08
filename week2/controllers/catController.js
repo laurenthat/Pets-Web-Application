@@ -21,13 +21,25 @@ const getCat = async (req, res) => {
     // res.json(catModel.cats[req.params.catId-1]);
 };
 
-const createCat = (req, res) => {
-    console.log(req.body);
-    res.send('Adding a cat')
+const createCat = async (req, res) => {
+    const cat = req.body;
+    cat.filename = req.file.filename;
+    console.log('creating a new cat:', cat);
+    const catId = await catModel.addCat(cat);
+    res.status(201).json({catId: catId}); //or we can just write ({catId}) since we created the const catId
 };
 
 const modifyCat = (req, res) => {};
-const deleteCat = (req, res) => {};
+
+const deleteCat = async (req, res) => {
+    const result =  await catModel.deleteCatById(req.params.catId, res);
+    console.log ('cat deleted', result);
+    if (result.affectedRows > 0) {
+        res.json({message: 'cat deleted'});
+    } else  {
+        res.status(404).json({message: 'cat was already deleted'});
+    }
+};
 
 module.exports = {
     getCat,
