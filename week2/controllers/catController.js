@@ -29,7 +29,19 @@ const createCat = async (req, res) => {
     res.status(201).json({catId: catId}); //or we can just write ({catId}) since we created the const catId
 };
 
-const modifyCat = (req, res) => {};
+const modifyCat = async (req, res) => {
+    const cat  = req.body;
+    //if 'id' is included in the url then we add it to the cat object
+    if(req.params.catId) {
+        cat.id = req.params.catId;
+    }
+    const result = await catModel.updateCatById(cat, res);
+    if (result.affectedRows > 0) {
+        res.json({message: 'cat updated' + cat.id});
+    } else  {
+        res.status(404).json({message: 'no changes made'});
+    }
+};
 
 const deleteCat = async (req, res) => {
     const result =  await catModel.deleteCatById(req.params.catId, res);

@@ -38,8 +38,12 @@ const createUser = async (req, res) => {
 
 };
 
-const modifyUser = (req, res) => {};
-const deleteUser = (req, res) => {};
+const modifyUser = (req, res) => {
+    //TODO: add functionality & data model
+};
+const deleteUser = (req, res) => {
+        //TODO: add functionality & data model
+};
 
 module.exports = {
     getUser,
