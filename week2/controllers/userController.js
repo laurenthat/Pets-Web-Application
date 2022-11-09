@@ -38,17 +38,33 @@ const createUser = async (req, res) => {
 
 };
 
-const modifyUser = (req, res) => {
+const modifyUser = async (req, res) => {
     //TODO: add functionality & data model
+    const user = req.body;
+    if(req.params.userId) {
+        user.id = req.params.userId;
+    }
+    const result = await userModel.updateUserById(user, res);
+    if (result.affectedRows > 0) {
+        res.json({message: 'user updated' + user.id});
+    } else  {
+        res.status(404).json({message: 'no changes made'});
+    }
 };
-const deleteUser = (req, res) => {
-        //TODO: add functionality & data model
+const deleteUser = async (req, res) => {
+    const result =  await userModel.deleteUserById(req.params.userId, res);
+    console.log ('user deleted', result);
+    if (result.affectedRows > 0) {
+        res.json({message: 'user deleted'});
+    } else  {
+        res.status(404).json({message: 'user was already deleted'});
+    }
 };
 
 module.exports = {
     getUser,
     getUsers,
-    modifyUser,
     createUser,
+    modifyUser,
     deleteUser
 };
