@@ -27,7 +27,10 @@ const createCat = async (req, res) => {
 
     const errors = validationResult(req);
     //TODO: fix empty file validation
-    if (errors.isEmpty() && req.file) {
+    //file is empty or missing(not passing multer's fileFilter in route)
+    if(!req.file) {
+        res.status(400).json({message: 'file missing or invalid'});
+    } else if (errors.isEmpty()) {
         const cat = req.body;
         cat.filename = req.file.filename;
         console.log('creating a new cat:', cat);

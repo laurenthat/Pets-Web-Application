@@ -28,7 +28,7 @@ router
   .post(
     "/",
     upload.single("cat"),
-    body("name").isAlphanumeric(),
+    body("name").isAlphanumeric().trim().escape(),
     body("birthdate").isDate(),
     body("weight").isFloat({ min: 0.1, max: 30 }),
     body("owner").isInt({ min: 1 }),
