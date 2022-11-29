@@ -59,7 +59,7 @@ const modifyCat = async (req, res) => {
 };
 
 const deleteCat = async (req, res) => {
-    const result =  await catModel.deleteCatById(req.params.catId, req.user.user_id, res);
+    const result =  await catModel.deleteCatById(req.params.catId, req.user.user_id, req.user.role, res);
     console.log ('cat deleted', result);
     if (result.affectedRows > 0) {
         res.json({message: 'cat deleted'});

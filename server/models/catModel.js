@@ -57,19 +57,22 @@ const addCat = async (cat, res) => {
   }
 };
 
-const deleteCatById = async (catId, owner, res) => {
-  if (userId == "4") {
+const deleteCatById = async (catId, owner, role, res) => {
   try {
-    const [rows] = await promisePool.query("DELETE FROM wop_cat WHERE cat_id = ? AND wop_cat.owner = wop_user.user_id = ?", [catId, owner]);
-    // cat_id = ? AND owner = ? AND EXISTS (SELECT * FROM wop_user WHERE wop_user.user_id = wop_cat.owner AND wop_user.role = 0)", [catId, owner]);
+    if (role === 0) {
+    const [rows] = await promisePool.query("DELETE FROM wop_cat WHERE cat_id = ?", [catId]);
     return rows;
+    } else {
+      const [rows] = await promisePool.query("DELETE FROM wop_cat WHERE cat_id = ? AND owner = ?", [catId, owner]);
+      return rows;
+    }
 
   } catch (e) {
     console.error("error", e.message);
     res.status(500).send(e.message);
   }
 };
-}
+
 // const deleteCatById = async (catId, owner, res) => {
 //   try {
 //     const [rows] = await promisePool.query("DELETE FROM wop_cat WHERE cat_id = ? AND owner = ?", [catId, owner]);
