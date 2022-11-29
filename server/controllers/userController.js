@@ -75,6 +75,7 @@ const deleteUser = async (req, res) => {
 };
 
 const checkToken = (req, res) => {
+  delete req.user.password; //doesn't allow the password to be seen in the browser's console
   res.json({user: req.user});
 }
 
