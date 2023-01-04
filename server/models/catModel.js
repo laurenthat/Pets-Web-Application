@@ -51,13 +51,14 @@ const getCatById = async (res, catId) => {
 
 const addCat = async (cat, res) => {
   try {
-    const sql = "INSERT INTO wop_cat VALUES (null, ?, ?, ?, ?, ?)";
+    const sql = "INSERT INTO wop_cat VALUES (null, ?, ?, ?, ?, ?, ?)";
     const values = [
       cat.name,
       cat.weight,
       cat.owner,
       cat.filename,
       cat.birthdate,
+      cat.coords
     ];
     const [result] = await promisePool.query(sql, values);
     return result.insertId;
@@ -98,17 +99,28 @@ const deleteCatById = async (catId, owner, role, res) => {
 //   }
 // };
 
-const updateCatById = async (cat, res) => {
+const updateCatById = async (cat, user, res) => {
   try {
     console.log("modifying cat", cat);
-    const sql =
-      "UPDATE wop_cat SET name = ?, weight = ?, owner = ?, birthdate = ? WHERE cat_id = ?";
-    const values = [cat.name, cat.weight, cat.owner, cat.birthdate, cat.id];
-    const [rows] = await promisePool.query(sql, values);
+    let sql, values;
+    // if admin user
+    if (user.role == 0) {
+      sql =
+        'UPDATE wop_cat SET name = ?, weight = ?, birthdate = ?, owner = ? ' +
+        'WHERE cat_id = ?';
+      values = [cat.name, cat.weight, cat.birthdate, cat.owner, cat.id];
+    } else {
+      sql =
+        'UPDATE wop_cat SET name = ?, weight = ?, birthdate = ? ' +
+        'WHERE cat_id = ? AND owner = ?';
+      values = [cat.name, cat.weight, cat.birthdate, cat.id, user.user_id];
+    }
+    const [rows] =
+      await promisePool.query(sql, values);
     return rows;
   } catch (e) {
     console.error("error", e.message);
-    res.status(500).send(e.message);
+    res.status(500).json({'error': e.message});
   }
 };
 

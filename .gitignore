@@ -2,4 +2,7 @@ node_modules/
 server/uploads/*
 !server/uploads/.gitkeep
 # * means all files in uploads and ! means except .gitkeep
+server/thumbnails/*
+!server/thumbnails/.gitkeep
 .env
+
