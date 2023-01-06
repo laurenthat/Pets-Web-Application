@@ -7,8 +7,8 @@ A web application where users can register and login to an account where they ca
 ## Installation
 Clone the repository by `git clone https://github.com/laurenthat/Pets-Web-Application.git`
 ## Features
-- logged in users can create a profile of a pet which includes a name, date of birth and photo.
-- logged in users can create, edit and delete only their own pet profiles. 
-- admin user can create, edit and delete all pet profiles.
+- logged-in users can create a profile of a pet which includes a name, date of birth and photo
+- REST interface and relational database used
+- User roles like admin and logged-in user
 
 
